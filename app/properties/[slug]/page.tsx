@@ -161,7 +161,7 @@ export default async function PropertyDetailPage({ params }: Props) {
 
               <div className="space-y-3">
                 <a
-                  href={`https://wa.me/201016502374?text=${whatsappMessage}`}
+                  href={`https://wa.me/201001363727?text=${whatsappMessage}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-sm shadow-lg shadow-emerald-600/30 transition-all"
