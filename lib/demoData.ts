@@ -52,6 +52,7 @@ export const DEMO_PROPERTIES: Property[] = UNITS.map((u, i) => {
     bathrooms: 1,
     direction: u.direction,
     view: u.view,
+    finish: 'تشطيب جهاز',
     meters: u.fixed ? 'غير راكبة' : 'جميع العدادات راكبة',
     status: 'available',
     description: lines.join('\n'),
