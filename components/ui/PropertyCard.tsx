@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Maximize2, BedDouble, Building, ArrowLeft } from 'lucide-react';
 import { Property } from '@/types';
+import { isPlaceholderImage } from '@/lib/utils';
 
 export default function PropertyCard({ property }: { property: Property }) {
   const statusLabels = {
@@ -15,13 +16,20 @@ export default function PropertyCard({ property }: { property: Property }) {
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group">
       <div className="relative h-64 overflow-hidden bg-gray-100">
-        <Image 
-          src={property.cover_image} 
-          alt={property.title} 
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
+        {isPlaceholderImage(property.cover_image) ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-beige-200 text-gray-400">
+            <Building className="w-10 h-10" />
+            <span className="text-xs font-semibold">صور الوحدة قريبًا</span>
+          </div>
+        ) : (
+          <Image
+            src={property.cover_image}
+            alt={property.title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        )}
         <div className="absolute top-4 right-4">
           <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md ${status.bg}`}>
             {status.text}

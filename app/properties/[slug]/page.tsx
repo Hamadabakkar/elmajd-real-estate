@@ -4,10 +4,13 @@ import { notFound } from 'next/navigation';
 import { getPropertyBySlug } from '@/services/properties';
 import ImageGallery from '@/components/ui/ImageGallery';
 import VideoPlayer from '@/components/ui/VideoPlayer';
+import { isPlaceholderImage } from '@/lib/utils';
 import { 
   Building2, Maximize2, BedDouble, Bath, MapPin, 
   Compass, Eye, CheckCircle2, Phone, MessageSquare, Map 
 } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
 
 interface Props {
   params: { slug: string };
@@ -42,13 +45,15 @@ export default async function PropertyDetailPage({ params }: Props) {
     <div className="bg-beige-100 min-h-screen pb-20">
       {/* Cover Banner */}
       <div className="relative h-[50vh] min-h-[380px] bg-charcoal-900">
-        <Image 
-          src={property.cover_image} 
-          alt={property.title}
-          fill
-          priority
-          className="object-cover opacity-75"
-        />
+        {!isPlaceholderImage(property.cover_image) && (
+          <Image
+            src={property.cover_image}
+            alt={property.title}
+            fill
+            priority
+            className="object-cover opacity-75"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900 via-charcoal-900/40 to-transparent" />
         
         <div className="absolute bottom-6 right-0 left-0">

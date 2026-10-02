@@ -1,7 +1,7 @@
 import { getProperties } from '@/services/properties';
 import PropertyCard from '@/components/ui/PropertyCard';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function PropertiesPage() {
   const properties = await getProperties();

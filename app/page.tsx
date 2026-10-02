@@ -3,48 +3,65 @@ import Image from 'next/image';
 import { getProperties } from '@/services/properties';
 import PropertyCard from '@/components/ui/PropertyCard';
 import { ArrowDown, Sparkles } from 'lucide-react';
+import { isPlaceholderImage } from '@/lib/utils';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const properties = await getProperties();
   const availableProperties = properties.filter(p => p.status !== 'sold');
+  const availableCount = properties.filter(p => p.status === 'available').length;
+  // خلفية الـ Hero: صورة حقيقية مرفوعة لو موجودة، وإلا خلفية سادة بدون صور مخترعة
+  const heroImage = properties.find(p => !isPlaceholderImage(p.cover_image))?.cover_image;
 
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-[80vh] min-h-[550px] bg-charcoal-900 flex items-center justify-center text-white text-center px-4 overflow-hidden">
-        <Image 
-          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=80" 
-          alt="Hero Cover"
-          fill
-          priority
-          className="object-cover opacity-35"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900 via-charcoal-900/50 to-transparent" />
+      <section className="relative min-h-[520px] h-[75vh] bg-charcoal-900 flex items-center justify-center text-white text-center px-4 overflow-hidden">
+        {heroImage ? (
+          <Image
+            src={heroImage}
+            alt="وحدات سكن مصر"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-30"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(197,155,39,0.18),_transparent_60%)]" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900 via-charcoal-900/70 to-charcoal-900/30" />
 
-        <div className="relative z-10 max-w-4xl mx-auto space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/20 border border-gold-500/40 text-gold-400 text-xs font-bold">
+        <div className="relative z-10 max-w-3xl mx-auto space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/15 border border-gold-500/40 text-gold-400 text-xs font-bold">
             <Sparkles className="w-4 h-4" />
             <span>المجد ينفعك وقت الجد</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-white">
-            اختار شقتك من <span className="text-gold-400 border-b-4 border-gold-500 pb-1">الواقع</span> مش من الكلام.
+          <h1 className="text-3xl sm:text-5xl font-extrabold leading-snug text-white">
+            شوف <span className="text-gold-400 border-b-4 border-gold-500 pb-1">المتاح الحقيقي</span> في سكن مصر – مدينة الإنتاج الإعلامي
           </h1>
 
-          <p className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto font-light leading-relaxed">
-            كتالوج وحدات متاحة بصور وفيديوهات وتفاصيل واضحة ودقيقة مباشرة بدون تزييف.
+          <p className="text-sm sm:text-base text-gray-300 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+            {['صور حقيقية', 'تفاصيل واضحة', 'أسعار محدثة', 'وحدات متاحة فعليًا'].map((t, i) => (
+              <span key={t} className="flex items-center gap-3">
+                {i > 0 && <span className="text-gold-500">•</span>}
+                {t}
+              </span>
+            ))}
           </p>
 
-          <div className="pt-4">
-            <Link 
+          <div className="pt-2 flex flex-col items-center gap-3">
+            <Link
               href="#catalog"
-              className="inline-flex items-center gap-3 bg-gold-500 hover:bg-gold-400 text-charcoal-900 px-8 py-4 rounded-xl font-extrabold text-base transition-all transform hover:-translate-y-1 shadow-xl shadow-gold-500/20"
+              className="inline-flex items-center gap-3 bg-gold-500 hover:bg-gold-400 text-charcoal-900 px-8 py-4 rounded-xl font-extrabold text-base transition-colors shadow-lg shadow-gold-500/20"
             >
-              <span>شوف الوحدات المتاحة</span>
+              <span>شوف الشقق</span>
               <ArrowDown className="w-5 h-5" />
             </Link>
+            {availableCount > 0 && (
+              <span className="text-xs text-gray-400">{availableCount.toLocaleString('ar-EG')} وحدة متاحة الآن</span>
+            )}
           </div>
         </div>
       </section>
