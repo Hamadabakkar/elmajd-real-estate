@@ -11,6 +11,7 @@ type U = {
   slug: string; floor: string; side?: string; area: number; price: number;
   balconies?: number; direction?: string; view?: string; financing?: boolean;
   title?: string; installments?: string; payment?: string;
+  fixed?: boolean; // سعر ثابت وعدادات غير راكبة
 };
 
 const UNITS: U[] = [
@@ -19,7 +20,7 @@ const UNITS: U[] = [
   { slug: 'first-front-115-landscape', floor: 'الدور الأول', side: 'أمامي', area: 115, price: 2500000, direction: 'بحري شرقي', view: 'مميز - لاند سكيب', financing: true },
   { slug: 'first-front-115-2balcony', floor: 'الدور الأول', side: 'أمامي', area: 115, price: 2500000, balconies: 2, direction: 'بحري صريح', view: 'غير مجروح' },
   { slug: 'second-front-115', floor: 'الدور الثاني', side: 'أمامي', area: 115, price: 2450000, view: 'عادي' },
-  { slug: 'third-front-118-2balcony', floor: 'الدور الثالث', side: 'أمامي', area: 118, price: 2400000, balconies: 2, direction: 'قبلي', view: 'ممتاز - على شارع الحديقة المركزية' },
+  { slug: 'third-front-118-2balcony', floor: 'الدور الثالث', side: 'أمامي', area: 118, price: 2400000, balconies: 2, direction: 'قبلي', view: 'ممتاز - على شارع الحديقة المركزية', fixed: true },
   { slug: 'third-front-115', floor: 'الدور الثالث', side: 'أمامي', area: 115, price: 2450000, direction: 'قبلي', view: 'عادي', financing: true },
   { slug: 'fourth-back-115', floor: 'الدور الرابع', side: 'خلفي', area: 115, price: 2200000 },
   { slug: 'fifth-front-115-a', floor: 'الدور الخامس', side: 'أمامي', area: 115, price: 2100000, view: 'غير مجروح' },
@@ -32,12 +33,14 @@ export const DEMO_PROPERTIES: Property[] = UNITS.map((u, i) => {
   const features = ['3 غرف + ريسبشن', 'قريبة جداً من مول مصر', 'كمبوند سكن مصر'];
   if (u.balconies) features.push(`${u.balconies} بلكونة`);
   if (u.financing) features.push('تصلح تمويل عقاري');
+  if (!u.fixed) features.push('قابل للتفاوض', 'جميع العدادات راكبة');
   const lines = [
     `شقة ${u.area} متر بـ${u.floor}${u.side ? ' (' + u.side + ')' : ''}${u.balconies ? ` بعدد ${u.balconies} بلكونة` : ''}، داخل كمبوند سكن مصر بمدينة الإنتاج الإعلامي، قريبة جداً من مول مصر.`,
     'تتكون من 3 غرف نوم + ريسبشن + مطبخ + حمام.',
   ];
   if (u.direction) lines.push(`الاتجاه: ${u.direction}`);
   if (u.view) lines.push(`الفيو: ${u.view}`);
+  if (!u.fixed) lines.push('جميع العدادات راكبة - السعر قابل للتفاوض.');
   return {
     id,
     title: u.title ?? `شقة ${u.area}م² – ${u.floor}${u.side ? ' ' + u.side : ''} – سكن مصر`,
@@ -49,6 +52,7 @@ export const DEMO_PROPERTIES: Property[] = UNITS.map((u, i) => {
     bathrooms: 1,
     direction: u.direction,
     view: u.view,
+    meters: u.fixed ? 'غير راكبة' : 'جميع العدادات راكبة',
     status: 'available',
     description: lines.join('\n'),
     location: 'كمبوند سكن مصر - مدينة الإنتاج الإعلامي',
