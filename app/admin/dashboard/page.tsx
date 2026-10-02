@@ -85,6 +85,9 @@ export default function AdminDashboardPage() {
                   <td className="p-4">{p.area} م²</td>
                   <td className="p-4">{p.status}</td>
                   <td className="p-4 flex justify-center gap-2">
+                    <Link href={`/admin/properties/${p.id}/edit`} className="p-2 text-gold-600 hover:bg-beige-100 rounded-lg">
+                      <Edit className="w-4 h-4" />
+                    </Link>
                     <button onClick={() => handleDelete(p.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
                       <Trash2 className="w-4 h-4" />
                     </button>
