@@ -1,74 +1,64 @@
 import { Property } from '@/types';
 
-export const DEMO_PROPERTIES: Property[] = [
-  {
-    id: 'demo-1',
-    title: 'شقة 118م² – سكن مصر مدينة الإنتاج الإعلامي',
-    slug: 'sakan-misr-118m-third-floor',
-    price: 2400000,
-    area: 118,
-    floor: 'الدور الثالث',
+const IMGS = [
+  'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+];
+
+type U = {
+  slug: string; floor: string; side?: string; area: number; price: number;
+  balconies?: number; direction?: string; view?: string; financing?: boolean;
+  title?: string; installments?: string; payment?: string;
+};
+
+const UNITS: U[] = [
+  { slug: 'ground-takeover', floor: 'الدور الأرضي', area: 115, price: 1300000, title: 'شقة دور أرضي – تكملة أقساط (مقدم 1.3 مليون)', payment: 'تكملة أقساط - مقدم 1.300.000', installments: 'قسط 58 ألف كل 3 شهور لمدة 6 سنين' },
+  { slug: 'ground-1900', floor: 'الدور الأرضي', area: 115, price: 1900000 },
+  { slug: 'first-front-115-landscape', floor: 'الدور الأول', side: 'أمامي', area: 115, price: 2500000, direction: 'بحري شرقي', view: 'مميز - لاند سكيب', financing: true },
+  { slug: 'first-front-115-2balcony', floor: 'الدور الأول', side: 'أمامي', area: 115, price: 2500000, balconies: 2, direction: 'بحري صريح', view: 'غير مجروح' },
+  { slug: 'second-front-115', floor: 'الدور الثاني', side: 'أمامي', area: 115, price: 2450000, view: 'عادي' },
+  { slug: 'third-front-118-2balcony', floor: 'الدور الثالث', side: 'أمامي', area: 118, price: 2400000, balconies: 2, direction: 'قبلي', view: 'ممتاز - على شارع الحديقة المركزية' },
+  { slug: 'third-front-115', floor: 'الدور الثالث', side: 'أمامي', area: 115, price: 2450000, direction: 'قبلي', view: 'عادي', financing: true },
+  { slug: 'fourth-back-115', floor: 'الدور الرابع', side: 'خلفي', area: 115, price: 2200000 },
+  { slug: 'fifth-front-115-a', floor: 'الدور الخامس', side: 'أمامي', area: 115, price: 2100000, view: 'غير مجروح' },
+  { slug: 'fifth-front-115-b', floor: 'الدور الخامس', side: 'أمامي', area: 115, price: 2000000, direction: 'بحري', view: 'غير مجروح' },
+];
+
+export const DEMO_PROPERTIES: Property[] = UNITS.map((u, i) => {
+  const id = `unit-${i + 1}`;
+  const cover = IMGS[i % IMGS.length];
+  const features = ['3 غرف + ريسبشن', 'قريبة جداً من مول مصر', 'كمبوند سكن مصر'];
+  if (u.balconies) features.push(`${u.balconies} بلكونة`);
+  if (u.financing) features.push('تصلح تمويل عقاري');
+  const lines = [
+    `شقة ${u.area} متر بـ${u.floor}${u.side ? ' (' + u.side + ')' : ''}${u.balconies ? ` بعدد ${u.balconies} بلكونة` : ''}، داخل كمبوند سكن مصر بمدينة الإنتاج الإعلامي، قريبة جداً من مول مصر.`,
+    'تتكون من 3 غرف نوم + ريسبشن + مطبخ + حمام.',
+  ];
+  if (u.direction) lines.push(`الاتجاه: ${u.direction}`);
+  if (u.view) lines.push(`الفيو: ${u.view}`);
+  return {
+    id,
+    title: u.title ?? `شقة ${u.area}م² – ${u.floor}${u.side ? ' ' + u.side : ''} – سكن مصر`,
+    slug: u.slug,
+    price: u.price,
+    area: u.area,
+    floor: u.side ? `${u.floor} ${u.side}` : u.floor,
     rooms: 3,
     bathrooms: 1,
-    direction: 'بحري شرقي',
-    view: 'لاندسكيب مفتوح وحدائق',
-    finish: 'تشطيب كامل سوبر لوكس',
+    direction: u.direction,
+    view: u.view,
     status: 'available',
-    description: 'شقة 118 متر داخل كمبوند سكن مصر بمدينة الإنتاج الإعلامي، الموقع ممتاز جداً بالقرب من البوابة الرئيسية، تقسيم داخلي استثماري وممتاز: 3 غرف نوم واسعة، ريسبشن قطعتين، حمام ومطبخ. العمارة مزودة بجميع المرافق ومصعد، واجهة مودرن، جاهزة للسكن الفوري.',
-    location: 'مدينة الإنتاج الإعلامي - 6 أكتوبر',
-    google_maps_url: 'https://maps.google.com',
-    down_payment: 2400000,
-    installments: 'خالصة الثمن بدون أقساط',
-    payment_method: 'كاش',
-    mortgage_available: true,
-    meters: 'كهرباء كارت + مياه مستقل',
-    cover_image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80',
+    description: lines.join('\n'),
+    location: 'كمبوند سكن مصر - مدينة الإنتاج الإعلامي',
+    installments: u.installments ?? 'اتصل للتفاصيل',
+    payment_method: u.payment ?? 'اتصل للتفاصيل',
+    mortgage_available: !!u.financing,
+    cover_image: cover,
     created_at: new Date().toISOString(),
-    images: [
-      { id: 'img-1', property_id: 'demo-1', storage_path: '', public_url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80', sort_order: 1 },
-      { id: 'img-2', property_id: 'demo-1', storage_path: '', public_url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80', sort_order: 2 },
-      { id: 'img-3', property_id: 'demo-1', storage_path: '', public_url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80', sort_order: 3 },
-    ],
-    videos: [
-      { id: 'vid-1', property_id: 'demo-1', title: 'Video Tour المعاينة الكاملة', storage_path: '', public_url: 'https://www.w3schools.com/html/mov_bbb.mp4', sort_order: 1 }
-    ],
-    features: [
-      { id: 'f-1', property_id: 'demo-1', feature: 'كاملة المرافق' },
-      { id: 'f-2', property_id: 'demo-1', feature: 'جميع العدادات' },
-      { id: 'f-3', property_id: 'demo-1', feature: 'قريبة من البوابة' },
-      { id: 'f-4', property_id: 'demo-1', feature: 'تمويل عقاري متاح' }
-    ]
-  },
-  {
-    id: 'demo-2',
-    title: 'شقة 140م² – دار مصر حدائق أكتوبر',
-    slug: 'dar-misr-140m-first-floor',
-    price: 3100000,
-    area: 140,
-    floor: 'الدور الأول بعد الأرضي',
-    rooms: 3,
-    bathrooms: 2,
-    direction: 'قبلي بحري',
-    view: 'شارع الرئيسي والمول التجاري',
-    finish: 'تشطيب فاخر ممتاز',
-    status: 'available',
-    description: 'شقة بموقع استثنائي بدار مصر حدائق أكتوبر، ناصية صريحة غير مجروحة. تتكون من 3 غرف منهم غرفة ماستر، 2 حمام، مطبخ كبير، ريسبشن واسع. موقع الكمبوند متكامل الخدمات.',
-    location: 'حدائق أكتوبر - بجوار الطريق الدائري الأوسطي',
-    google_maps_url: 'https://maps.google.com',
-    down_payment: 2500000,
-    installments: 'متبقي أقساط سنوية مع الهيئة',
-    payment_method: 'مقدم + تسهيلات',
-    mortgage_available: false,
-    meters: 'جميع العدادات راكبة',
-    cover_image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-    created_at: new Date().toISOString(),
-    images: [
-      { id: 'img-4', property_id: 'demo-2', storage_path: '', public_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80', sort_order: 1 },
-    ],
+    images: [{ id: `${id}-img`, property_id: id, storage_path: '', public_url: cover, sort_order: 1 }],
     videos: [],
-    features: [
-      { id: 'f-5', property_id: 'demo-2', feature: 'كمبوند مغلق أمن 24 ساعة' },
-      { id: 'f-6', property_id: 'demo-2', feature: 'جاهزة للسكن' }
-    ]
-  }
-];
+    features: features.map((f, k) => ({ id: `${id}-f${k}`, property_id: id, feature: f })),
+  } as Property;
+});
